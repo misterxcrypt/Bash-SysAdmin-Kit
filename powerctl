@@ -1,0 +1,169 @@
+#!/bin/bash
+
+
+
+Help () {
+
+	space='  '
+
+	echo internsctl v0.1.0
+
+	echo -e "Author \n Hariharan. M, student at Sri Eshwar College of Engineering. Contact is in man page."
+
+	echo Usage: internsctl [Options] {target}
+
+	echo -e "\nTARGET SPECIFICATION: \n${space}can pass filename and directories etc."
+
+	echo -e "${space}Ex: internsctl file getinfo myfile \n   --size & -s : to print size of the file \n   --permissions & -p : to print the file permissions of the file \n   --owner & o : to print to file owner \n   --last modified & m : to print the last modified date and time of the file"
+
+	echo -e "\nGET INFO: \n${space}cpu getinfo - print the information of your cpu \n${space}memory getinfo - print the memory information \n${space}--version - to print the version of the tool"
+
+	echo -e "\nCREATING USER: \n${space}Ex: internsctl user create <user-name> \n${space}user list - list all the regular users \n${space}user list --sudo-only - list all the users including system users"
+
+}
+
+
+
+
+
+if [ "$1" == '--help' ]
+
+then 
+
+	Help
+
+elif [ "$1" == 'cpu' ] && [ "$2" == 'getinfo' ]
+
+then
+
+	lscpu
+
+elif [ "$1" == '--version' ] 
+
+then
+
+	echo version - v0.1.0
+
+elif [ "$1" == 'memory' ] && [ "$2" == 'getinfo' ] 
+
+then
+
+	free
+
+elif [ "$1" == 'user' ] && [ "$2" == 'create' ] 
+
+then 
+
+	sudo adduser $3
+
+elif [ "$1" == 'user' ] && [ "$2" == 'list' ] 
+
+then
+
+	if [ "$3" == "--sudo-only" ]
+
+	then 
+
+		sudo cut -d : -f1 /etc/passwd
+
+	else
+
+		cat /etc/passwd | grep ":[0-9][0-9][0-9][0-9]:" > userlist.txt
+
+		cut -d : -f1 userlist.txt 
+
+		rm userlist.txt
+
+	fi
+
+elif [ "$1" == 'file' ] && [ "$2" == 'getinfo' ] 
+
+then
+
+	if [ "$3" == "-s" ] || [ "$3" == "--size" ] 
+
+	then
+
+		wc -c $4 > size.txt
+
+		cut -d ' ' -f1 size.txt
+
+		rm size.txt
+
+	elif [ "$3" == "--owner" ] || [ "$3" == "o" ]
+
+	then
+
+		ls -l $4 > own
+
+		awk '{ print $3}' own
+
+		rm own
+
+	elif [ "$3" == "--permissions" ] || [ "$3" == "-p" ]
+
+	then
+
+		ls -l $4 > size.txt
+
+		cut -d ' ' -f 1 size.txt
+
+		rm size.txt
+
+	elif [ "$3" == "--last-modified" ] || [ "$3" == "m" ]
+
+	then 
+
+		stat -c '%y' $4
+
+	else
+
+		wc -c $3 > size.txt
+
+		s=$(cut -d ' ' -f1 size.txt)
+
+		rm size.txt
+
+		
+
+		ls -l $3 > own
+
+		owner=$(awk '{ print $3}' own)
+
+		rm own
+
+		
+
+		ls -l $3 > size.txt
+
+		perm=`cut -d ' ' -f 1 size.txt`
+
+		rm size.txt
+
+		
+
+		modify=`stat -c '%y' $3`
+
+		
+
+		echo      File : $3
+
+		echo    Access : $perm
+
+		echo 'Size (B) :' $s
+
+		echo     Owner : $owner
+
+		echo    Modify : $modify
+
+	fi
+
+else
+
+	echo Invalid arguments. 
+
+	echo Check the manual page by running 'man internsctl' or run 'internsctl --help'.
+
+	echo Check the help page for valid arguments.
+
+fi

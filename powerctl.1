@@ -1,0 +1,46 @@
+.TH "POWERCTL" "May 2022" "powerctl 0.1.0" "Hola Amigo"
+.hy
+.SH Name
+.B 
+powerctl is the information tool and user creating tool.
+.SH SYNOPSIS
+.PP 
+Syntax is very simple for powerctl. An example :
+.SB
+powerctl file getinfo [-s size] <file-name>
+.SH DESCRIPTION
+.PP
+powerctl \[en] gives details about a file, create user, get info about cpu and memory
+.SH OPTIONS
+.PP
+There are really small number of options you may need to know:
+.PP
+.LP 
+-s or --size - print the size of the file  
+.LP 
+-p or --permissions - print the permissions of the file 
+.LP 
+o or --owner - print the owner of the file
+.LP 
+m or --last-modified - print the time and date of the last modification of the file
+.LP
+cpu getinfo - to get information about your cpu
+.LP
+memory getinfo - to get information about the memory
+.LP
+user create <username> - to create a new user
+.LP
+user list - to list regular users
+.LP
+user list --sudo-only - to list all users 
+.SH BUGS
+.PP
+It's a new tool. If you found any bugs, report it in the email which is given in the AUTHOR tag. 
+.SH AUTHOR 
+.PP
+I am Hariharan.M studying computer science 1st year in Sri Eshwar College of Engineering. Contact:
+.IP
+.SB haribrothers6@gmail.com 
+.SH SEE ALSO
+.PP
+Also check lscpu, free, adduser commands. There are more commands I included in this tool. ENJOY !
